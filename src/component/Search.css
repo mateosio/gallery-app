@@ -1,0 +1,16 @@
+.search_container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.search_container .input_search{
+    width: 60%;
+    background-color: whitesmoke;
+    color: antiquewhite;
+    margin-top: 70px;
+    border-radius: 20px 0px 0px 20px;
+   
+}
+
