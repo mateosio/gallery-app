@@ -1,0 +1,9 @@
+.photos_container{
+    columns: 5 300px;
+    column-gap: 5px;
+}
+
+.img{
+    max-width: 100%;
+}
+

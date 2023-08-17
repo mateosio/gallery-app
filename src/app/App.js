@@ -1,8 +1,8 @@
 import React from 'react';
 import {RouterProvider, createBrowserRouter, createRoutesFromElements, Route} from 'react-router-dom';
-import {Root} from './component/Root';
-import {Search} from './component/Search';
-import {MyPhotos} from './component/MyPhotos';
+import {Root} from '../component/Root';
+import {Search} from '../component/Search';
+import {MyPhotos} from '../component/MyPhotos';
 
 
 
