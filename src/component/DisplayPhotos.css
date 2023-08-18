@@ -1,9 +1,23 @@
 .photos_container{
-    columns: 5 300px;
-    column-gap: 5px;
+   margin-top: 100px;
+   columns: 3 420px;
+   column-gap: 7px;
+   padding: 0px 15px;
+}
+
+.image-container{
+    position: relative;
 }
 
 .img{
     max-width: 100%;
+    border-radius: 5px;    
+}
+
+.icon-container{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;    
 }
 
