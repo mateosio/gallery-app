@@ -1,0 +1,12 @@
+.favorite_container{
+    background-color: #13161c;
+    min-height: 84vh;
+}
+
+.favoritePhotos_container{
+        /* margin-top: 30px; */
+       columns: 3 420px;
+       column-gap: 7px;
+       padding: 0px 15px;
+       margin-bottom: 20px;
+    }
