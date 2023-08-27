@@ -3,41 +3,64 @@ import { selectPhotos, selectLoading, selectError} from "../features/photosSlice
 import { useSelector } from "react-redux";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import '../component/DisplayPhotos.css';
-import { useDispatch } from "react-redux";
-import { addFavorite } from "../features/favoritePhotosSlice";
-
 import {Alert, Stack} from '@mui/material';
 
-const setLocalStorage = (photo) =>{
-    try{
-        window.localStorage.setItem("favoritePhoto", JSON.stringify(photo))
-    }
+
+const getStorage = () =>{
+    const favoritePhoto = JSON.parse(window.localStorage.getItem("favoritePhoto"));
+    let liked;
+
+    try {
+        if (favoritePhoto){
+            liked = favoritePhoto;
+         } 
+         else {
+            liked = {};
+         }
+         return liked;
+    }  
     catch (error){
-        console.error(error)
-    }
-    
-}
+     console.error(error)
+    }}
 
 
 export function DisplayPhotos (){
 
     const [showAlert, setShowAlert] = useState(false);
+    const [LikePhoto, setLikePhoto] = useState(false);
     
     const photos = useSelector(selectPhotos);
     const loading = useSelector(selectLoading);
     const error = useSelector(selectError);
 
-    const dispatch = useDispatch();
-    
     const handleFavorite = (photo) =>{
-        // dispatch(addFavorite(photo))
-        setLocalStorage(photo)
-        setShowAlert(true)
+        const likedPhotos = getStorage();
 
-        setTimeout(()=>{
-            setShowAlert(false)
-        }, 2000)
+        if (likedPhotos[photo.id]){
+            likedPhotos[photo.id] = undefined;
+        } else {
+            likedPhotos[photo.id] = photo;
+            setShowAlert(true);
+
+            setTimeout(()=>{
+                setShowAlert(false)
+            }, 2000)
+        }
+        window.localStorage.setItem("favoritePhoto", JSON.stringify(likedPhotos))
     };
+
+    const func = () =>{
+        const liked = getStorage();
+        //liked lo guardo en un state para consultar desde el handle y no tener que volver a ejecutar la funcion?
+        return photos.map(photo => (
+            <div key={photo.id} className="image-container">
+                <img className="img" src={photo.urls.regular} alt={photo.alt_description}></img>
+                <div className={liked[photo.id] ? "icon-container like" : "icon-container"} onClick={()=>{ handleFavorite(photo) }}>
+                    <FavoriteIcon />
+                </div>
+            </div>                        
+        ))
+    }
   
     
         return(
@@ -49,15 +72,8 @@ export function DisplayPhotos (){
                     error ? 
                     (<h1>Ocurrió un error en tu solicitud</h1>) 
                     :
-                     photos.map(photo => (
-                        <div className="image-container">
-                            <img className="img" key={photo.id} src={photo.urls.regular} alt={photo.alt_description}></img>
-                            <div className="icon-container" onClick={()=>{ handleFavorite(photo) }}>
-                                <FavoriteIcon />
-                            </div>
-                        </div>
-
-                    ))}
+                    func()
+                    }
 
                     {showAlert && 
                     <Stack className="alert_container">
@@ -66,12 +82,5 @@ export function DisplayPhotos (){
                     }
                    
             </div>
-        )       
-    
-    
-         
-    
-    
-
-
-}
+        )
+    }
