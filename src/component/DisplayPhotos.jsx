@@ -27,7 +27,7 @@ const getStorage = () =>{
 export function DisplayPhotos (){
 
     const [showAlert, setShowAlert] = useState(false);
-    const [LikePhoto, setLikePhoto] = useState(false);
+    const [deleteAlert, setDeleteAlert] = useState(false);
     
     const photos = useSelector(selectPhotos);
     const loading = useSelector(selectLoading);
@@ -38,13 +38,19 @@ export function DisplayPhotos (){
 
         if (likedPhotos[photo.id]){
             likedPhotos[photo.id] = undefined;
+            setDeleteAlert(true)
+
+            setTimeout(()=>{
+                setDeleteAlert(false)
+            }, 2000)
+
         } else {
             likedPhotos[photo.id] = photo;
             setShowAlert(true);
 
             setTimeout(()=>{
                 setShowAlert(false)
-            }, 2000)
+            }, 1500)
         }
         window.localStorage.setItem("favoritePhoto", JSON.stringify(likedPhotos))
     };
@@ -78,6 +84,11 @@ export function DisplayPhotos (){
                     {showAlert && 
                     <Stack className="alert_container">
                         <Alert sx={{ maxWidth: '100%', minWidth: "100%" }} severity="success">Added to favorite</Alert>
+                    </Stack>
+                    }
+                    {deleteAlert && 
+                    <Stack className="alert_container">
+                        <Alert sx={{ maxWidth: '100%', minWidth: "100%" }} severity="success">Delete for favorite</Alert>
                     </Stack>
                     }
                    
