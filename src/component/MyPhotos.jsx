@@ -1,18 +1,26 @@
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import "../component/MyPhotos.css";
 import {Alert, Stack, InputLabel, MenuItem, FormControl, Select, Box} from '@mui/material';
 
 
 export function MyPhotos () {
     const [showAlert, setShowAlert] = useState(false);
-    const [sort, setSort] = useState([]);
+    const [renderBy, setRenderBy] = useState(null);
     const [order, setOrder] = useState('');
 
-    const favoritePhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
-    console.log(favoritePhotos);
+    useEffect(()=>{
+        const favoritePhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
+        console.log(favoritePhotos);
+        if (favoritePhotos) {
+           setRenderBy(Object.values(favoritePhotos))
+        }
+
+    },[showAlert])
+
 
     const handleDelete = (photo)=>{
         const likedPhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
@@ -28,24 +36,29 @@ export function MyPhotos () {
     }
 
     const handleSort = (e) =>{
-        setOrder(e.target.value);
-        console.log(e.target.value);
-        const arrayToSort = Object.values(favoritePhotos);
+         setOrder(e.target.value);
+         console.log(e.target.value);
+        
 
-        if(e.target.value === "likes"){
-            const orderByLikes = arrayToSort.sort((a, b)=>{return b.likes - a.likes})
-            console.log(orderByLikes);
-        } else if (e.target.value === "height"){
-            const orderByHeight = arrayToSort.sort((a, b)=>{return a.height - b.height})
-            console.log(orderByHeight);
-        } else{
-            const orderByWidth = arrayToSort.sort((a, b)=>{return a.width - b.width})
-            console.log(orderByWidth);
-        }       
+         if(e.target.value === "likes"){
+             const orderByLikes = renderBy.sort((a, b)=>{return b.likes - a.likes})
+             console.log(orderByLikes);
+             setRenderBy(orderByLikes);
+
+         } else if (e.target.value === "height"){
+             const orderByHeight = renderBy.sort((a, b)=>{return a.height - b.height})
+             console.log(orderByHeight);
+             setRenderBy(orderByHeight);
+
+         } else{
+             const orderByWidth = renderBy.sort((a, b)=>{return a.width - b.width})
+             console.log(orderByWidth);
+             setRenderBy(orderByWidth);
+         }       
     }
 
    
-    if(favoritePhotos == null){
+    if(renderBy === null){
         return(
         <>
         <Navbar />
@@ -59,7 +72,7 @@ export function MyPhotos () {
         </>
         )
     }else {
-        const favorite = Object.values(favoritePhotos);
+        
         return ( 
             <>
                 <Navbar />
@@ -78,11 +91,12 @@ export function MyPhotos () {
                             </Box>
                     </div>
                     <div className="favoritePhotos_container">
-                            {favorite.map(photo => (
+                            {renderBy.map(photo => (
                                 <div key={photo.id} className="image-container">
                                     <img className="img" src={photo.urls.regular} alt={photo.alt_description}></img>
-                                    <div className="icon-container" onClick={()=>{ handleDelete(photo) }}>
-                                        <DeleteIcon />
+                                    <div className="icon-container" >
+                                        <EditIcon />
+                                        <DeleteIcon onClick={()=>{ handleDelete(photo) }}/>
                                     </div>
                                 </div>
         
@@ -104,3 +118,4 @@ export function MyPhotos () {
     }
 
 }
+

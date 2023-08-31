@@ -7,9 +7,22 @@ const key = "client_id=QK6dPHST6CCL_367sJpNcUf4u3X7JhuZAJy4aF7uf2U";
 //Creo una acción con asyncThunk donde realizó la petición a la apí y la exporto para ser usada al hacer click en el input (inputSearch.jsx). 
 export const fetchPhotos = createAsyncThunk("photos/fetchPhotos", 
     async (input)=>{
-        const response = await fetch(`https://api.unsplash.com/search/photos?${key}&query=${input}`);
-        const data = await response.json();
-        return data.results;
+     
+      let query = `https://api.unsplash.com/photos/random?${key}&count=20`;
+      if(input){
+        query = `https://api.unsplash.com/search/photos?${key}&query=${input}`;
+      }
+
+      const response = await fetch(query);
+      const data = await response.json();
+
+      let res = data;
+      if(input){
+        res = data.results;
+      };
+
+        return res;
+      
     })
 
 export const photosSlice = createSlice({
