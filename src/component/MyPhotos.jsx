@@ -5,12 +5,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import "../component/MyPhotos.css";
 import {Alert, Stack, InputLabel, MenuItem, FormControl, Select, Box} from '@mui/material';
+import BasicModal from '../component/Modal';
 
 
 export function MyPhotos () {
     const [showAlert, setShowAlert] = useState(false);
     const [renderBy, setRenderBy] = useState(null);
     const [order, setOrder] = useState('');
+    
+    //useState del modal
+    const [open, setOpen] = useState(false);
+    const [photoInfo, setPhotoInfo] = useState('');
+    
 
     useEffect(()=>{
         const favoritePhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
@@ -35,6 +41,14 @@ export function MyPhotos () {
         }
     }
 
+    const handleOpenModal = (photo) =>{
+        const likedPhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
+        const photoId = likedPhotos[photo.id]
+        console.log(photo);
+        setPhotoInfo(photoId);
+        setOpen(true);
+    }
+    
     const handleSort = (e) =>{
          setOrder(e.target.value);
          console.log(e.target.value);
@@ -95,7 +109,7 @@ export function MyPhotos () {
                                 <div key={photo.id} className="image-container">
                                     <img className="img" src={photo.urls.regular} alt={photo.alt_description}></img>
                                     <div className="icon-container" >
-                                        <EditIcon />
+                                        <EditIcon onClick={()=>{ handleOpenModal(photo) }} />
                                         <DeleteIcon onClick={()=>{ handleDelete(photo) }}/>
                                     </div>
                                 </div>
@@ -107,6 +121,9 @@ export function MyPhotos () {
                     <Stack className="alert_container">
                         <Alert sx={{ maxWidth: '100%', minWidth: "100%" }} severity="success">Delete from favorite</Alert>
                     </Stack>
+                    }
+                    {
+                        <BasicModal open={open} setOpen={setOpen} photo={photoInfo}/>
                     }
                 
                 </div>
