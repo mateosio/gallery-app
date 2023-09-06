@@ -19,3 +19,13 @@
     height: 56px;
     border-radius: 0px 20px 20px 0px;
 }
+
+.h2_container{
+    display: flex;
+    justify-content: center
+}
+.h2_container h2 {
+    width: 60%;
+    padding: 0;
+
+}

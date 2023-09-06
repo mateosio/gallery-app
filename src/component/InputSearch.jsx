@@ -32,7 +32,7 @@ export function InputSearch (){
     // }
 
     return(
-        
+            <>
             <div className="search_container">
                 
                 <TextField                         
@@ -49,7 +49,11 @@ export function InputSearch (){
 
                <Button className="button_input" variant="contained" onClick={handleSearch}>Search</Button>
              
-            </div>            
+            </div>
+            <div className="h2_container">
+                <h2>Search without a parameter and you will get a series of random photos</h2>
+            </div>
+            </>
         
     )
 }
