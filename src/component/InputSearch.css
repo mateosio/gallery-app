@@ -1,0 +1,31 @@
+.search_container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.search_container .search_input{
+    width: 60%;
+    background-color: whitesmoke;
+    color: antiquewhite;
+    margin-top: 70px;
+    border-radius: 20px 0px 0px 20px;
+   
+}
+
+.search_container .button_input{
+    margin: 70px 0px 0px 0px;
+    height: 56px;
+    border-radius: 0px 20px 20px 0px;
+}
+
+.h2_container{
+    display: flex;
+    justify-content: center
+}
+.h2_container h2 {
+    width: 60%;
+    padding: 0;
+
+}

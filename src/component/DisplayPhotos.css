@@ -1,0 +1,33 @@
+.photos_container{
+   margin-top: 100px;
+   columns: 3 420px;
+   column-gap: 7px;
+   padding: 0px 15px;
+}
+
+.image-container{
+    position: relative;
+}
+
+.img{
+    max-width: 100%;
+    border-radius: 5px;    
+}
+
+.icon-container{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer; 
+}
+
+.alert_container{
+    position: fixed;
+    top: 1%;
+    right: 5%;
+    
+}
+
+.like{
+    color: #5bbd9c;
+}
