@@ -1,6 +1,6 @@
 {
   "name": "gallery-photos",
-  "homepage": "https://mateosio.github.io/gallery-app",
+  "homepage": "https://mateosio.github.io/gallery-app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
