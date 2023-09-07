@@ -10,7 +10,7 @@ export const fetchPhotos = createAsyncThunk("photos/fetchPhotos",
      
       let query = `https://api.unsplash.com/photos/random?${key}&count=20`;
       if(input){
-        query = `https://api.unsplash.com/search/photos?${key}&query=${input}&page=4&per_page=20`;
+        query = `https://api.unsplash.com/search/photos?${key}&query=${input}&page=1&per_page=20`;
       }
 
       const response = await fetch(query);

@@ -4,7 +4,7 @@ import "../component/InputSearch.css";
 import { Button } from "@mui/material";
 // import { showPhotos } from "../features/photosSlice"; Accion vieja del reducer en el caso que no use asyncThunk; 
 import { useDispatch } from "react-redux";
-import { fetchPhotos } from "../features/photosSlice"
+import { fetchPhotos } from "../features/photosSlice";
 
 // const key = "client_id=QK6dPHST6CCL_367sJpNcUf4u3X7JhuZAJy4aF7uf2U";
 

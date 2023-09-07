@@ -36,3 +36,10 @@
 .boxOrder_container .MuiBox-root {
     margin: 30px 0px;
 }
+
+.icon-download-container{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer; 
+}

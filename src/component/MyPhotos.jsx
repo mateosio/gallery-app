@@ -3,9 +3,11 @@ import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import DownloadIcon from '@mui/icons-material/Download';
 import "../component/MyPhotos.css";
 import {Alert, Stack, InputLabel, MenuItem, FormControl, Select, Box} from '@mui/material';
 import BasicModal from '../component/Modal';
+import {saveAs} from 'file-saver';
 
 
 export function MyPhotos () {
@@ -25,7 +27,7 @@ export function MyPhotos () {
            setRenderBy(Object.values(favoritePhotos))
         }
 
-    },[showAlert])
+    },[showAlert]);
 
 
     const handleDelete = (photo)=>{
@@ -39,7 +41,7 @@ export function MyPhotos () {
                 setShowAlert(false)
             }, 1500)
         }
-    }
+    };
 
     const handleOpenModal = (photo) =>{
         const likedPhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
@@ -47,7 +49,7 @@ export function MyPhotos () {
         console.log(photo);
         setPhotoInfo(photoId);
         setOpen(true);
-    }
+    };
     
     const handleSort = (e) =>{
          setOrder(e.target.value);
@@ -69,6 +71,11 @@ export function MyPhotos () {
              console.log(orderByWidth);
              setRenderBy(orderByWidth);
          }       
+    }
+
+    const handleDownload = (photo)=>{
+        saveAs(photo.urls.regular, `${photo.id}.jpg`)
+
     }
 
    
@@ -111,6 +118,9 @@ export function MyPhotos () {
                                     <div className="icon-container" >
                                         <EditIcon onClick={()=>{ handleOpenModal(photo) }} />
                                         <DeleteIcon onClick={()=>{ handleDelete(photo) }}/>
+                                    </div>
+                                    <div className="icon-download-container">
+                                        <DownloadIcon onClick={ ()=>{ handleDownload(photo) }} />
                                     </div>
                                 </div>
         
