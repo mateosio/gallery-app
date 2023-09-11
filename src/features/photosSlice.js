@@ -5,7 +5,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 const key = "client_id=QK6dPHST6CCL_367sJpNcUf4u3X7JhuZAJy4aF7uf2U";
 
 //Creo una acción con asyncThunk donde realizó la petición a la apí y la exporto para ser usada al hacer click en el input (inputSearch.jsx). 
-export const fetchPhotos = createAsyncThunk("photos/fetchPhotos", 
+export const fetchPhotos = createAsyncThunk("photos/fetchPhotos",
     async (input)=>{
      
       let query = `https://api.unsplash.com/photos/random?${key}&count=20`;

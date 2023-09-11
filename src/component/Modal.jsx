@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeDescription, selectFavoritePhotos } from '../features/favoritePhotosSlice';
 
 
 
@@ -19,22 +21,18 @@ const style = {
 
 export default function BasicModal({open, setOpen, photo}) {
   const [newDescription, setNewDescription] = useState("");
-  
-
+ 
+  console.log(photo);
+  const dispatch = useDispatch();
   
   const handleSave = ()=>{
-    
-     const likedPhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
-     
-      const newObject = {
-        ...photo,
-        description: newDescription
-        }
-      
-      likedPhotos[photo.id] = newObject;
-      
-      window.localStorage.setItem("favoritePhoto", JSON.stringify(likedPhotos))
-     
+    const newObject = {
+      ...photo,
+      description: newDescription
+      }
+      dispatch(changeDescription(newObject))
+     console.log(newObject);
+         
      setOpen(false);
      setNewDescription("");
 }
@@ -59,7 +57,9 @@ export default function BasicModal({open, setOpen, photo}) {
           
           <div>
                 
-              <input style={{borderBottom: "1px solid", width:"300px", borderRadius: "20px"}} value={newDescription} onChange={(e)=>{setNewDescription(e.target.value)}}></input>
+              <input style={{borderBottom: "1px solid", width:"300px", borderRadius: "20px"}} 
+              value={newDescription} 
+              onChange={(e)=>{setNewDescription(e.target.value)}}></input>
 
                <button style={{cursor:"pointer", display:"block", marginTop: "6px"}} onClick={handleSave}>Save</button>
              

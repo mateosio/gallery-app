@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from "react";
+import {React, useState} from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,78 +8,64 @@ import "../component/MyPhotos.css";
 import {Alert, Stack, InputLabel, MenuItem, FormControl, Select, Box} from '@mui/material';
 import BasicModal from '../component/Modal';
 import {saveAs} from 'file-saver';
-
+import { useSelector, useDispatch } from "react-redux";
+import { selectFavoritePhotos } from "../features/favoritePhotosSlice";
+import { removeFavorite } from "../features/favoritePhotosSlice";
 
 export function MyPhotos () {
     const [showAlert, setShowAlert] = useState(false);
-    const [renderBy, setRenderBy] = useState(null);
-    const [order, setOrder] = useState('');
+    const [sortSelected, setSortSelected] = useState('');
     
     //useState del modal
     const [open, setOpen] = useState(false);
     const [photoInfo, setPhotoInfo] = useState('');
+
+    const dispatch = useDispatch();
+    const favorite = useSelector(selectFavoritePhotos);
+
+    const favoritePhoto = [...favorite].sort((a, b)=>{
+        if( sortSelected === "likes"){
+            return b.likes - a.likes;
+
+        } else if (sortSelected === "height"){
+            return a.height - b.height;
+            
+        } else if (sortSelected === "width"){
+            return a.width - b.width;           
+        } else{
+            return 0;
+        }
+    });
     
-
-    useEffect(()=>{
-        const favoritePhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
-        console.log(favoritePhotos);
-        if (favoritePhotos) {
-           setRenderBy(Object.values(favoritePhotos))
-        }
-
-    },[showAlert]);
-
-
+  
     const handleDelete = (photo)=>{
-        const likedPhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
-        if (likedPhotos[photo.id]){
-            likedPhotos[photo.id] = undefined;
-            window.localStorage.setItem("favoritePhoto", JSON.stringify(likedPhotos))
-            setShowAlert(true);
+        
+        dispatch(removeFavorite(photo))
 
-            setTimeout(()=>{
-                setShowAlert(false)
-            }, 1500)
-        }
+        setShowAlert(true);
+
+        setTimeout(()=>{
+           setShowAlert(false)
+        }, 1500)
     };
 
     const handleOpenModal = (photo) =>{
-        const likedPhotos = JSON.parse(window.localStorage.getItem("favoritePhoto"));
-        const photoId = likedPhotos[photo.id]
-        console.log(photo);
+         const photoId = favorite.find((image)=> image.id === photo.id)
+        // console.log(photoId);
         setPhotoInfo(photoId);
         setOpen(true);
     };
     
     const handleSort = (e) =>{
-         setOrder(e.target.value);
-         console.log(e.target.value);
-        
-
-         if(e.target.value === "likes"){
-             const orderByLikes = renderBy.sort((a, b)=>{return b.likes - a.likes})
-             console.log(orderByLikes);
-             setRenderBy(orderByLikes);
-
-         } else if (e.target.value === "height"){
-             const orderByHeight = renderBy.sort((a, b)=>{return a.height - b.height})
-             console.log(orderByHeight);
-             setRenderBy(orderByHeight);
-
-         } else{
-             const orderByWidth = renderBy.sort((a, b)=>{return a.width - b.width})
-             console.log(orderByWidth);
-             setRenderBy(orderByWidth);
-         }       
+         setSortSelected(e.target.value);
     }
 
     const handleDownload = (photo)=>{
         saveAs(photo.urls.regular, `${photo.id}.jpg`)
-
     }
 
    
-    if(renderBy === null){
+    if(favoritePhoto.lenght === 0){
         return(
         <>
         <Navbar />
@@ -102,7 +88,7 @@ export function MyPhotos () {
                             <Box sx={{ width: 110, backgroundColor: "#5bbd9c", borderStyle: 'none', borderRadius: "35px"}}>
                                 <FormControl sx={{'.MuiOutlinedInput-notchedOutline': { borderStyle: 'none'}}} fullWidth>
                                     <InputLabel id="demo-simple-select-label">Order by</InputLabel>
-                                    <Select labelId="demo-simple-select-label" id="demo-simple-select" value={order}
+                                    <Select labelId="demo-simple-select-label" id="demo-simple-select" value={sortSelected}
                                     onChange={ handleSort }>
                                         <MenuItem value={"likes"}>Likes</MenuItem>
                                         <MenuItem value={"width"}>Width</MenuItem>
@@ -112,7 +98,7 @@ export function MyPhotos () {
                             </Box>
                     </div>
                     <div className="favoritePhotos_container">
-                            {renderBy.map(photo => (
+                            {favoritePhoto.map(photo => (
                                 <div key={photo.id} className="image-container">
                                     <img className="img" src={photo.urls.regular} alt={photo.alt_description}></img>
                                     <div className="icon-container" >
